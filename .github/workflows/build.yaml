@@ -5,29 +5,6 @@ on:
   push:
     branches: [ master ]
 jobs:
-
-  itest:
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        java-client-version: [ "2.6.1", "2.8.0", "3.0.0", "3.1.0"]
-        cp-platform-version: [
-            "6.0.3", # Kafka 2.6.3
-            "6.2.0", # Kafka 2.8.0
-            "7.0.3", # Kafka 3.0.3
-            "7.1.1", # Kafka 3.1.1
-        ]
-    steps:
-      - uses: actions/checkout@v2
-      - name: Set up GraalVM
-        uses: ayltai/setup-graalvm@v1
-        with:
-          java-version: 11
-          graalvm-version: 21.2.0
-          native-image: true
-      - name: Build with Gradle
-        run: CONFLUENT_PLATFORM_VERSION="${{ matrix.cp-platform-version }}"  KAFKA_CLIENT_VERSION_JAVA="${{ matrix.java-client-version }}" ./gradlew clean :itest:test -Dquarkus.package.type=native --stacktrace
-
   build:
     runs-on: ubuntu-latest
     steps:
